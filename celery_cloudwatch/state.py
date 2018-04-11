@@ -32,10 +32,10 @@ class State(object):
             try:
                 return fun(*args, **kwargs)
             except:
-                print "Exception in user code:"
-                print '-'*60
+                print("Exception in user code:")
+                print('-'*60)
                 traceback.print_exc(file=sys.stdout)
-                print '-'*60
+                print('-'*60)
             finally:
                 if clear_after:
                     self._clear()
@@ -54,7 +54,7 @@ class State(object):
     def num_waiting_running_by_task(self):
         total_waiting = {}
         total_running = {}
-        for task_record in self.registry.values():
+        for task_record in list(self.registry.values()):
             if task_record.name is not None:
                 if task_record.started:
                     total_running.setdefault(task_record.name, 0)
@@ -178,13 +178,13 @@ class TaskRecord(tuple):
 
     def _asdict(self):
         'Return a new OrderedDict which maps field names to their values'
-        return OrderedDict(zip(self._fields, self))
+        return OrderedDict(list(zip(self._fields, self)))
 
     def _replace(_self, **kwds):
         'Return a new TaskRecord object replacing specified fields with new values'
-        result = _self._make(map(kwds.pop, ('name', 'sent_at', 'started_at', 'succeeded_at', 'failed_at'), _self))
+        result = _self._make(list(map(kwds.pop, ('name', 'sent_at', 'started_at', 'succeeded_at', 'failed_at'), _self)))
         if kwds:
-            raise ValueError('Got unexpected field names: %r' % kwds.keys())
+            raise ValueError('Got unexpected field names: %r' % list(kwds.keys()))
         return result
 
     def __getnewargs__(self):
