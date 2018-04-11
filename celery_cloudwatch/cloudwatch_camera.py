@@ -93,6 +93,7 @@ class CloudWatchCamera(Camera):
             metrics.add('CeleryEventFailed', unit='Count', value=task_event_failed.get(task_name, 0), dimensions=dimensions)
             metrics.add('CeleryNumWaiting', unit='Count', value=num_waiting_by_task.get(task_name, 0), dimensions=dimensions)
             metrics.add('CeleryNumRunning', unit='Count', value=num_running_by_task.get(task_name, 0), dimensions=dimensions)
+            metrics.add('CeleryNumWaitingAndRunning', unit='Count', value=num_waiting_by_task.get(task_name, 0) + num_running_by_task.get(task_name, 0), dimensions=dimensions)
             waiting_time = time_to_start.get(task_name)
             if waiting_time:
                 metrics.add('CeleryQueuedTime', unit='Seconds', dimensions=dimensions, stats=waiting_time.__dict__.copy())
@@ -136,6 +137,7 @@ class CloudWatchCamera(Camera):
             metrics.add('CeleryEventFailed', unit='Count', value=failed, dimensions=dimensions)
             metrics.add('CeleryNumWaiting', unit='Count', value=num_waiting, dimensions=dimensions)
             metrics.add('CeleryNumRunning', unit='Count', value=num_running, dimensions=dimensions)
+            metrics.add('CeleryNumWaitingAndRunning', unit='Count', value=num_waiting + num_running, dimensions=dimensions)
             if waiting_time:
                 metrics.add('CeleryWaitingTime', unit='Seconds', dimensions=dimensions, stats=waiting_time.__dict__.copy())
             if running_time:
